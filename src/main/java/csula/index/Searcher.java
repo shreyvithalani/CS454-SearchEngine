@@ -41,15 +41,14 @@ public class Searcher {
 		TopDocs hits = searcher.search(q, 4);
 		ScoreDoc[] scoreDocs = hits.scoreDocs;
 
-		System.out.println("hits = " + scoreDocs.length);
-		System.out.println("Hits (score,  docId)");
+		
 
 		for (int n = 0; n < scoreDocs.length; n++) {
 			ScoreDoc sd = scoreDocs[n];
 			float score = sd.score;
 			int docId = sd.doc;
 
-			System.out.printf("%4.2f  %d\n", score, docId);
+			
 
 			Document document = indexReader.document(docId);
 			String docname = document.getField("path").stringValue();
