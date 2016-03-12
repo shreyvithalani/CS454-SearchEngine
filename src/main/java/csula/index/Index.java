@@ -17,7 +17,7 @@ import org.apache.lucene.util.Version;
 public class Index {
 	
 	
-	static StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_35,StopAnalyzer.ENGLISH_STOP_WORDS_SET);
+	static StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_35);
 	
 	public static String indexdir = "indexdir";
 	
@@ -55,6 +55,7 @@ public class Index {
 		doc.add(new Field("contents",reader,Field.TermVector.YES));
 		
 		writer.addDocument(doc);
+		System.out.println("yes");
 		
 		
 		

@@ -78,7 +78,9 @@ public class LinkAnalysis {
 
 		for (String url : outgoingLinks.keySet()) {
 			Set<String> in = new HashSet<String>();
-
+			
+			
+			
 			for (String link : outgoingLinks.keySet()) {
 				if (!url.equals(link)) {
 					if (outgoingLinks.get(link).contains(url)) {

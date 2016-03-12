@@ -23,7 +23,7 @@ public class Searcher {
 
 	public static void main(String[] args) throws IOException, ParseException {
 		// TODO Auto-generated method stub
-		searchIndex("wiki AND zone");
+		searchIndex("striker");
 
 	}
 
@@ -38,7 +38,7 @@ public class Searcher {
 				stdAn);
 		Query q = parser.parse(searchtext);
 
-		TopDocs hits = searcher.search(q, 4);
+		TopDocs hits = searcher.search(q, 20);
 		ScoreDoc[] scoreDocs = hits.scoreDocs;
 
 		System.out.println("hits = " + scoreDocs.length);
