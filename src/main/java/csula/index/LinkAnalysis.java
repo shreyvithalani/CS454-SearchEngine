@@ -17,9 +17,10 @@ public class LinkAnalysis {
 	public static Long totalDocuments = null;
 	public static Map<String, Set<String>> outgoingLinks = new HashMap<String, Set<String>>();
 	public static Map<String, Set<String>> incomingLinks = new HashMap<String, Set<String>>();
+	
 
 	public static String getPath() {
-		return "/Users/dhruvparmar91/downloads/articles";
+		return "/Users/dhruvparmar91/desktop/en/articles";
 	}
 
 	public static void main(String[] args) {
@@ -28,6 +29,8 @@ public class LinkAnalysis {
 		totalDocuments = (long) 0;
 		processFiles(files);
 		System.out.println(totalDocuments);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		getIncomingLinks();
 		PageRank pageRank = new PageRank(totalDocuments, outgoingLinks, incomingLinks);
 
 	}
@@ -41,12 +44,12 @@ public class LinkAnalysis {
 				if (file.isHidden()) {
 				} else {
 					totalDocuments++;
+					System.out.println(totalDocuments);
 					getOutgoingLinks(file);
 				}
 			}
 		}
-
-		getIncomingLinks();
+		
 	}
 
 	public static void getOutgoingLinks(File file) {
@@ -71,6 +74,8 @@ public class LinkAnalysis {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return;
 
 	}
 
@@ -82,7 +87,8 @@ public class LinkAnalysis {
 			
 			
 			for (String link : outgoingLinks.keySet()) {
-				if (!url.equals(link)) {
+				if (url.equals(link)) {
+				} else {
 					if (outgoingLinks.get(link).contains(url)) {
 						in.add(link);
 					}

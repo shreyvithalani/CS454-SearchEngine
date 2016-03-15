@@ -21,7 +21,7 @@ public class Index {
 	
 	public static String indexdir = "indexdir";
 	
-	public static String dir = "/Users/dhruvparmar91/Desktop/en";
+	public static String dir = "/Users/dhruvparmar91/desktop/en/articles";
 	
 	//Directory indexDir = FSDirectory.open(new File(indexdir));
 	
