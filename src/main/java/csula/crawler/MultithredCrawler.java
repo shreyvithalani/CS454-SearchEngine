@@ -1,5 +1,7 @@
 package csula.crawler;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Queue;
 import java.util.Set;
@@ -27,7 +29,6 @@ public class MultithredCrawler implements Runnable {
 		this.linkset = linkset;
 	}
 
-	@Override
 	public void run() {
 		System.out.println();
 		System.out.println("----------> Running thread: " + threadName);
@@ -51,6 +52,7 @@ public class MultithredCrawler implements Runnable {
 		while (!q.isEmpty()) {
 			Entry currentLinkEntry = q.remove();
 			Integer d = currentLinkEntry.getDepth();
+			
 
 			try {
 				Document doc = Jsoup.connect(currentLinkEntry.getLink()).get();
@@ -76,8 +78,9 @@ public class MultithredCrawler implements Runnable {
 						break;
 					}
 				}
-
-				mongoJdbc.storeDocument(currentLinkEntry.getLink().toString(), doc, title);
+				
+				savetofile(title,doc);
+				//mongoJdbc.storeDocument(currentLinkEntry.getLink().toString(), doc, title);
 
 				if (extractProcess) {
 					mongoJdbc.StoreExtractedData(currentLinkEntry.getLink().toString(), doc);
@@ -97,6 +100,21 @@ public class MultithredCrawler implements Runnable {
 		System.out.println("----------> Thread " + threadName + " completed task");
 		System.out.println();
 
+	}
+	
+	public void savetofile(String title, org.jsoup.nodes.Document doc) throws IOException{
+		String folderpath = System.getProperty ("user.home") + "/Desktop/crawleddata/" + title +".html";
+		//String filepath = folderpath + title + ".html";
+	    String filestring = doc.html();
+	    //System.getProperty ("user.home")
+	    FileWriter writer = new FileWriter(folderpath);
+	    BufferedWriter buffWriter = new BufferedWriter(writer);
+	    buffWriter.write(filestring);
+	    buffWriter.close();
+	    writer.close();
+	    
+	    
+		
 	}
 
 }
