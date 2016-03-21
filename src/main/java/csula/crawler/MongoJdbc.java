@@ -28,6 +28,8 @@ public class MongoJdbc {
 	public void storeDocument(String url, org.jsoup.nodes.Document doc, String title) throws IOException {
 
 		System.out.println(url);
+		
+	
 
 		// MongoClient mongoClient = new MongoClient("localhost");
 		MongoDatabase db = mongoClient.getDatabase("bigtable");
