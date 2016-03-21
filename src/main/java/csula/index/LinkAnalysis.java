@@ -17,10 +17,9 @@ public class LinkAnalysis {
 	public static Long totalDocuments = null;
 	public static Map<String, Set<String>> outgoingLinks = new HashMap<String, Set<String>>();
 	public static Map<String, Set<String>> incomingLinks = new HashMap<String, Set<String>>();
-	
 
 	public static String getPath() {
-		return "/Users/dhruvparmar91/desktop/en/articles";
+		return "/Users/dhruvparmar91/desktop/crawledfiles";
 	}
 
 	public static void main(String[] args) {
@@ -41,59 +40,67 @@ public class LinkAnalysis {
 			if (file.isDirectory()) {
 				processFiles(file.listFiles());
 			} else {
+
 				if (file.isHidden()) {
 				} else {
 					totalDocuments++;
-					System.out.println(totalDocuments);
+					//System.out.println(totalDocuments);
 					getOutgoingLinks(file);
 				}
 			}
 		}
-		
+
 	}
 
 	public static void getOutgoingLinks(File file) {
 
-		String[] splits = file.getAbsolutePath().split("articles");
-		String fileUrl = splits[1];
+		//String[] splits = file.getAbsolutePath().split("articles");
+		//String fileUrl = splits[1];
 
 		try {
 			Document document = Jsoup.parse(file, "UTF-8");
-			Elements links = document.select("a[href]");
-			Set<String> out = new HashSet<String>();
-			for (Element element : links) {
-				String url = element.attr("href");
-				String[] parts = url.split("articles");
-				if (parts.length > 1) {
-					out.add(parts[1]);
+			if (document.title().trim().length() != 0) {
+				Elements links = document.select("a[href]");
+				Set<String> out = new HashSet<String>();
+				for (Element element : links) {
+					String url = element.attr("href");
+					//System.out.println(url);
+//					String[] parts = url.split("articles");
+//					if (parts.length > 1) {
+//						out.add(parts[1]);
+//					}
+					out.add(url);
+					
 				}
+				
+				outgoingLinks.put(file.getName(), out);
 			}
-			outgoingLinks.put(fileUrl, out);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return;
 
 	}
 
 	private static void getIncomingLinks() {
-
+		
 		for (String url : outgoingLinks.keySet()) {
 			Set<String> in = new HashSet<String>();
-			
-			
-			
+
 			for (String link : outgoingLinks.keySet()) {
 				if (url.equals(link)) {
+					
 				} else {
 					if (outgoingLinks.get(link).contains(url)) {
+						
 						in.add(link);
 					}
 				}
 			}
+			System.out.println(in.size());
 			incomingLinks.put(url, in);
 
 		}

@@ -49,21 +49,20 @@ public class Main {
 			Set<String> linkset = Collections.synchronizedSet(new HashSet<String>());
 			q.add(new Entry(link, 0));
 			linkset.add(link);
-			MultithredCrawler[] arr = new MultithredCrawler[5];
+			MultithredCrawler[] arr = new MultithredCrawler[50];
 
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 50; i++) {
 				String threadName = "CRAWLER" + String.valueOf(i);
 				arr[i] = new MultithredCrawler(threadName, q, depth, extractProcess, linkset);
 
 			}
 
 			ExecutorService executor = Executors.newFixedThreadPool(arr.length);
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 50; i++) {
 				executor.execute(arr[i]);
 				if (i == 0) {
 					Thread.sleep(1000);
-				}
-				else {
+				} else {
 					Thread.sleep(500);
 				}
 			}

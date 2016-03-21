@@ -1,6 +1,9 @@
 package csula.crawler;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Queue;
 import java.util.Set;
 
@@ -9,6 +12,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.xml.sax.SAXException;
+
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 
 public class MultithredCrawler implements Runnable {
 	// private Thread t;
@@ -44,6 +50,19 @@ public class MultithredCrawler implements Runnable {
 	 * == null) { t = new Thread(this, threadName); t.start(); } }
 	 */
 
+	public void savetofile(String title, org.jsoup.nodes.Document doc) throws IOException {
+		String folderpath = System.getProperty("user.home") + "/Desktop/crawledfiles/" + title;
+		// String filepath = folderpath + title + ".html";
+		String filestring = doc.html();
+		// System.getProperty ("user.home")
+		FileWriter writer = new FileWriter(folderpath);
+		BufferedWriter buffWriter = new BufferedWriter(writer);
+		buffWriter.write(filestring);
+		buffWriter.close();
+		writer.close();
+
+	}
+
 	public void runCrawler() throws SAXException, TikaException {
 
 		MongoJdbc mongoJdbc = new MongoJdbc();
@@ -54,6 +73,7 @@ public class MultithredCrawler implements Runnable {
 
 			try {
 				Document doc = Jsoup.connect(currentLinkEntry.getLink()).get();
+				mongoJdbc.storeMD5(doc.title(), currentLinkEntry.getLink().split("/data/")[1]);
 				String title = doc.title();
 
 				org.jsoup.select.Elements extractedLinks = doc.select("a");
@@ -61,6 +81,7 @@ public class MultithredCrawler implements Runnable {
 					if (d < depth) {
 						Element currentItem = extractedLinks.get(i);
 						String currentLink = currentItem.attr("abs:href");
+						System.out.println(currentLink);
 						int tempDepth = d + 1;
 						if (currentLink.startsWith("http://") || currentLink.startsWith("www")
 								|| currentLink.startsWith("https://")) {
@@ -77,10 +98,12 @@ public class MultithredCrawler implements Runnable {
 					}
 				}
 
-				mongoJdbc.storeDocument(currentLinkEntry.getLink().toString(), doc, title);
-
+				// mongoJdbc.storeDocument(currentLinkEntry.getLink().toString(),
+				// doc, title);
+				savetofile(currentLinkEntry.getLink().split("/data/")[1], doc);
 				if (extractProcess) {
-					mongoJdbc.StoreExtractedData(currentLinkEntry.getLink().toString(), doc);
+					// mongoJdbc.StoreExtractedData(currentLinkEntry.getLink().toString(),
+					// doc);
 
 				}
 

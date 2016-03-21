@@ -14,7 +14,7 @@ import com.mongodb.client.MongoDatabase;
 public class PageRank {
 
 	public final Double lambda = 0.15;
-	public static Double defaultRank;
+	public  Double defaultRank;
 	public Long N;
 	public Map<String, Set<String>> outgoingLinks;
 	public Map<String, Set<String>> incomingLinks;
@@ -26,9 +26,11 @@ public class PageRank {
 
 	public PageRank(Long totalDocuments, Map<String, Set<String>> outgoingLinks,
 			Map<String, Set<String>> incomingLinks) {
-
+		
 		this.N = totalDocuments;
-		PageRank.defaultRank = (1.0 / totalDocuments);
+		System.out.println(this.N);
+		this.defaultRank = (1.0 / totalDocuments);
+		System.out.println(this.defaultRank);
 		this.outgoingLinks = outgoingLinks;
 		this.incomingLinks = incomingLinks;
 		this.mainMap = new HashMap<String, Double>();
@@ -52,7 +54,7 @@ public class PageRank {
 	public void defaultRanking() {
 
 		for (String link : this.incomingLinks.keySet()) {
-			this.mainMap.put(link, defaultRank);
+			this.mainMap.put(link, this.defaultRank);
 		}
 
 	}
@@ -73,26 +75,31 @@ public class PageRank {
 					}
 				}
 				rank += lambda / N;
+				//System.out.println(rank);
 				this.finalMap.put(link, rank);
 			}
 			for (String link : this.finalMap.keySet()) {
+				//System.out.println(this.finalMap.get(link));
 				this.mainMap.put(link, this.finalMap.get(link));
 			}
 		}
 	}
 
 	private void storeRanking() {
+		mongoClient = new MongoClient("localhost");
 		for (String link : this.mainMap.keySet()) {
 
-			mongoClient = new MongoClient("localhost");
+			
 			MongoDatabase db = mongoClient.getDatabase("bigtable");
 
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("url", link);
 			map.put("rank", this.mainMap.get(link));
 			db.getCollection("linkdata").insertOne(new Document(map));
-			mongoClient.close();
+			
 		}
+		
+		mongoClient.close();
 		
 
 	}

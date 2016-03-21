@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="/Users/dhruvparmar91/Desktop/Search-Engine/src/lib/mongo-java-driver-3.2.1.jar"/>
 	<classpathentry kind="lib" path="/Users/dhruvparmar91/Desktop/Search-Engine/src/lib/mongodb-driver-3.2.1-javadoc.jar"/>
 	<classpathentry kind="lib" path="/Users/dhruvparmar91/Desktop/Search-Engine/src/lib/tika-app-1.11.jar"/>
+	<classpathentry kind="lib" path="/Users/dhruvparmar91/Desktop/CS454-SearchEngine/src/lib/lucene-snowball-3.0.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

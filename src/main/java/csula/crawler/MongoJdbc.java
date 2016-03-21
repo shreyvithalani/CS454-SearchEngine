@@ -35,7 +35,6 @@ public class MongoJdbc {
 		map.put("URL", url);
 		map.put("content", doc.toString());
 		map.put("title", title);
-
 		db.getCollection("crawlerdata").insertOne(new Document(map));
 		// mongoClient.close();
 
@@ -79,6 +78,16 @@ public class MongoJdbc {
 
 		db.getCollection("extractordata").insertOne(new Document(map));
 		// mongoClient.close();
+
+	}
+
+	public void storeMD5(String title, String string) {
+		// MongoClient mongoClient = new MongoClient();
+		MongoDatabase db = mongoClient.getDatabase("bigtable");
+		java.util.Map<String, Object> urlmap = new HashMap<String, Object>();
+		urlmap.put("URL", string);
+		urlmap.put("title", title);
+		db.getCollection("hashurls").insertOne(new Document(urlmap));
 
 	}
 

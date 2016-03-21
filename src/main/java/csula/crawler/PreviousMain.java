@@ -41,16 +41,19 @@ public class PreviousMain {
 			Set<String> linkset = Collections.synchronizedSet(new HashSet<String>());
 			q.add(new Entry(link, 0));
 			linkset.add(link);
-			MultithredCrawler[] arr = new MultithredCrawler[5];
-
-			for (int i = 0; i < 5; i++) {
-				String threadName = "CRAWLER" + String.valueOf(i);
-				arr[i] = new MultithredCrawler(threadName, q, depth, extractProcess, linkset);
-				// arr[i].start();
-				if (arr[i] == arr[0]) {
-					Thread.sleep(1000);
-				}
-			}
+			
+			Crawler crawler = new Crawler();
+			crawler.runCrawler(link, depth, extractProcess);
+//			MultithredCrawler[] arr = new MultithredCrawler[5];
+//
+//			for (int i = 0; i < 5; i++) {
+//				String threadName = "CRAWLER" + String.valueOf(i);
+//				arr[i] = new MultithredCrawler(threadName, q, depth, extractProcess, linkset);
+//				// arr[i].start();
+//				if (arr[i] == arr[0]) {
+//					Thread.sleep(1000);
+//				}
+//			}
 			/*
 			 * arr[0] = new MultithredCrawler("CRAWLER1", q, depth,
 			 * extractProcess, linkset); arr[1] = new
@@ -65,9 +68,9 @@ public class PreviousMain {
 			 * arr[2].start(); arr[3].start(); arr[4].start();
 			 */
 
-			for (int i = 0; i < 5; i++) {
+			//for (int i = 0; i < 5; i++) {
 				// arr[i].join();
-			}
+			//}
 
 			// Crawler crawler = new Crawler();
 			// crawler.runCrawler("http://web.mit.edu/", 1, true);

@@ -1,5 +1,7 @@
 package csula.crawler;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -49,13 +51,13 @@ public class Crawler {
 						break;
 					}
 				}
-
-				mongoJdbc.storeDocument(currentLinkEntry.getLink().toString(), doc, title);
-
-				if (extractProcess) {
-					mongoJdbc.StoreExtractedData(currentLinkEntry.getLink().toString(), doc);
-
-				}
+				savetofile(title,doc);
+//				mongoJdbc.storeDocument(currentLinkEntry.getLink().toString(), doc, title);
+//
+//				if (extractProcess) {
+//					mongoJdbc.StoreExtractedData(currentLinkEntry.getLink().toString(), doc);
+//
+//				}
 
 			}
 
@@ -65,8 +67,23 @@ public class Crawler {
 
 		}
 
-		mongoJdbc.closeConnection();
+//		mongoJdbc.closeConnection();
 
+	}
+	
+	public void savetofile(String title, org.jsoup.nodes.Document doc) throws IOException{
+		String folderpath = System.getProperty ("user.home") + "/Desktop/crawledfiles/" + title +".html";
+		//String filepath = folderpath + title + ".html";
+	    String filestring = doc.html();
+	    //System.getProperty ("user.home")
+	    FileWriter writer = new FileWriter(folderpath);
+	    BufferedWriter buffWriter = new BufferedWriter(writer);
+	    buffWriter.write(filestring);
+	    buffWriter.close();
+	    writer.close();
+	    
+	    
+		
 	}
 
 }
